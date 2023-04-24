@@ -1,11 +1,9 @@
 package com.example.ecommerce.Entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.springframework.core.Ordered;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @Table(name = "customer")
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Builder
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,7 +35,7 @@ public class Customer {
     List<Item>items = new ArrayList<>();
 
     @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL)
-    List<Ordered>orders = new ArrayList<>();
+    List<OrderList>orders = new ArrayList<>();
 
 
 

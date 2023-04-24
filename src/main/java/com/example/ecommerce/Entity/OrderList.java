@@ -7,17 +7,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "order")
-@FieldDefaults(level = AccessLevel.PRIVATE)
-public class Ordered {
+@AllArgsConstructor
+@Table(name="orderList")
+@FieldDefaults(level= AccessLevel.PRIVATE)
+public class OrderList {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
@@ -30,10 +31,8 @@ public class Ordered {
 
     String cardUsed;
 
-
-
-    @OneToMany(mappedBy = "order",cascade = CascadeType.ALL)
-    List<Item>items = new ArrayList<>();
+    @OneToMany(mappedBy = "orderList",cascade = CascadeType.ALL)
+    List<Item> items = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn

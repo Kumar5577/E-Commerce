@@ -1,11 +1,9 @@
 package com.example.ecommerce.Entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.springframework.core.Ordered;
 
 @Entity
 @Data
@@ -13,6 +11,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @Table(name = "item")
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Builder
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,5 +26,9 @@ public class Item {
 
     @ManyToOne
     @JoinColumn
-    Ordered order;
+    OrderList orderList;
+
+    @ManyToOne
+    @JoinColumn
+    Customer customer;
 }
