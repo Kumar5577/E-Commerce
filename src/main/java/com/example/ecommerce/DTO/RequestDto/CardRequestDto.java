@@ -1,23 +1,24 @@
 package com.example.ecommerce.DTO.RequestDto;
 
-import com.example.ecommerce.Enum.CategoryType;
-import com.example.ecommerce.Enum.ProductStatus;
+import com.example.ecommerce.Enum.CardType;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
-public class ProductRequestDto {
-    String email;
-    String productName;
-    int quantity;
-    int price;
+public class CardRequestDto {
+    String mobNo;
 
-    CategoryType categoryType;
-    ProductStatus productStatus;
+    String cardNo;
+
+    int cvv;
+
+    CardType cardType;
+
 }

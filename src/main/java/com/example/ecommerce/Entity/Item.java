@@ -31,4 +31,8 @@ public class Item {
     @ManyToOne
     @JoinColumn
     Customer customer;
+
+    @ManyToOne
+    @JoinColumn
+    Product product;
 }

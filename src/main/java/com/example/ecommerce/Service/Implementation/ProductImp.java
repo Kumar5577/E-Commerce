@@ -2,6 +2,7 @@ package com.example.ecommerce.Service.Implementation;
 
 import com.example.ecommerce.DTO.RequestDto.ProductRequestDto;
 import com.example.ecommerce.DTO.ResponseDto.ProductResponseDto;
+import com.example.ecommerce.Entity.Item;
 import com.example.ecommerce.Entity.Product;
 import com.example.ecommerce.Entity.Seller;
 import com.example.ecommerce.Enum.CategoryType;
@@ -24,11 +25,12 @@ public class ProductImp implements ProductService {
     @Override
     public ProductResponseDto addProduct(ProductRequestDto productRequestDto) {
     Product product = ProductTransformer.requestToProduct(productRequestDto);
-    Seller seller = sellerRepository.findById(productRequestDto.getSellerId()).get();
+    Seller seller = sellerRepository.findByEmailId(productRequestDto.getEmail());
     seller.getProducts().add(product);
-
+    product.setSeller(seller);
+        sellerRepository.save(seller);
     ProductResponseDto productResponseDto = ProductTransformer.productToResponse(product);
-    productResponseDto.setSellerName(seller.getName());
+        productResponseDto.setSellerName(seller.getName());
         sellerRepository.save(seller);
     return productResponseDto;
 
@@ -40,8 +42,10 @@ public class ProductImp implements ProductService {
         Seller seller = sellerRepository.findByEmailId(emailId);
         List<ProductResponseDto> productResponseDtoList = new ArrayList<>();
         List<Product>products = seller.getProducts();
+
        for(Product product:products){
            productResponseDtoList.add(ProductTransformer.productToResponse(product));
+
        }
        return productResponseDtoList;
 
@@ -159,8 +163,8 @@ public class ProductImp implements ProductService {
         return productResponseDtos;
     }
     @Override
-    public List<ProductResponseDto> getAllProductsByCategory(CategoryType category){
-        List<Product> products = productRepository.findByCategoryType(category);
+    public List<ProductResponseDto> getAllProductsByCategory(String category){
+        List<Product> products = productRepository.findByCategoryType(CategoryType.valueOf(category));
 
         List<ProductResponseDto> productResponseDtos = new ArrayList<>();
         for(Product product: products) {
@@ -169,8 +173,8 @@ public class ProductImp implements ProductService {
         return productResponseDtos;
     }
     @Override
-    public ProductResponseDto getCheapestProductAtAParticularCategory(CategoryType category) {
-        List<ProductResponseDto> productResponseDtos = getAllProductsByCategory(category);
+    public ProductResponseDto getCheapestProductAtAParticularCategory(String category) {
+        List<ProductResponseDto> productResponseDtos = getAllProductsByCategory(String.valueOf(CategoryType.valueOf(category)));
         int maxPrice = Integer.MAX_VALUE;
         int minPrice =0;
         for(ProductResponseDto productResponseDto:productResponseDtos){
@@ -181,8 +185,8 @@ public class ProductImp implements ProductService {
     }
 
     @Override
-    public ProductResponseDto getCostliestProductAtAParticularCategory(CategoryType category) {
-        List<ProductResponseDto> productResponseDtos = getAllProductsByCategory(category);
+    public ProductResponseDto getCostliestProductAtAParticularCategory(String category) {
+        List<ProductResponseDto> productResponseDtos = getAllProductsByCategory(String.valueOf(CategoryType.valueOf(category)));
         int minPrice = Integer.MIN_VALUE;
         int  maxPrice=0;
         for(ProductResponseDto productResponseDto:productResponseDtos){
@@ -190,6 +194,19 @@ public class ProductImp implements ProductService {
         }
         Product product=productRepository.findByPrice(maxPrice);
         return ProductTransformer.productToResponse(product);
+    }
+    public void decreaseProductQuantity(Item item) throws Exception {
+
+        Product product = item.getProduct();
+        int quantity = item.getRequiredQuantity();
+        int currentQuantity = product.getQuantity();
+        if(quantity>currentQuantity){
+            throw new Exception("Out of stock");
+        }
+        product.setQuantity(currentQuantity-quantity);
+        if(product.getQuantity()==0){
+            product.setProductStatus(ProductStatus.OUTOFSTOCK);
+        }
     }
 
 

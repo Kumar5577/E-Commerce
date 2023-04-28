@@ -20,7 +20,9 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
     String name;
+    @Column(unique = true)
     String emailId;
+    @Column(unique = true)
     String mobNo;
     Integer age;
 

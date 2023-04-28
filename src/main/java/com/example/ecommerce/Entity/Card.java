@@ -4,6 +4,7 @@ import com.example.ecommerce.Enum.CardType;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;
 
@@ -24,7 +25,7 @@ public class Card {
     String cardNo;
 
     int cvv;
-
+    @CreationTimestamp
     Date expiryDate;
 
     @Enumerated(EnumType.STRING)

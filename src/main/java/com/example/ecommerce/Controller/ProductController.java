@@ -25,8 +25,9 @@ public class ProductController {
         return productImp.getProductBySellerEmailId(emailId);
     }
    // delete product by sellerId he also tells u the product id
-    @DeleteMapping("/delete-product-by-sellerId-and-productId")
-    public String deleteProductById(@RequestParam int sellerId,@RequestParam int productId){
+    @DeleteMapping("/delete-product-by-sellerId-and-productId/{sellerId" +
+            "}/{productId}")
+    public String deleteProductById(@PathVariable("sellerId") int sellerId,@PathVariable("productId") int productId){
         return productImp.deleteProductById(sellerId,productId);
     }
 // return top 5 cheapest products
@@ -57,19 +58,19 @@ public List<ProductResponseDto> quantityLessThanTen() {
 //get products of a particular category
 // get all products of a particular category
 @GetMapping("/get/{category}")
-public List<ProductResponseDto> getAllProductsByCategory(@PathVariable("category") CategoryType category){
+public List<ProductResponseDto> getAllProductsByCategory(@PathVariable("category") String category){
     return productImp.getAllProductsByCategory(category);
 }
 
 // return the cheapest product at a particular category
 @GetMapping("/get-cheapest-product-at -a particular-category/{category}")
-    public ProductResponseDto getCheapestProductAtAParticularCategory(@PathVariable("category")CategoryType category){
+    public ProductResponseDto getCheapestProductAtAParticularCategory(@PathVariable("category")String category){
         return productImp.getCheapestProductAtAParticularCategory(category);
 }
 
 //return the costliest product ata particular category
 @GetMapping("/get-costliest-product-at -a particular-category/{category}")
-public ProductResponseDto getCostliestProductAtAParticularCategory(@PathVariable("category")CategoryType category){
+public ProductResponseDto getCostliestProductAtAParticularCategory(@PathVariable("category")String category){
     return productImp.getCostliestProductAtAParticularCategory(category);
 }
 
